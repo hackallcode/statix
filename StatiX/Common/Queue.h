@@ -1,10 +1,7 @@
-#ifndef __FILES_QUEUE_INCLUDED__
-#define __FILES_QUEUE_INCLUDED__
+#ifndef __COMMON_QUEUE_INCLUDED__
+#define __COMMON_QUEUE_INCLUDED__
 
-#include <string>
-#include <unordered_map>
-
-namespace files
+namespace statix
 {
 	template<typename T>
 	class Queue
@@ -36,4 +33,4 @@ namespace files
 
 #include "Queue.inl"
 
-#endif // !__FILES_QUEUE_INCLUDED__
+#endif // !__COMMON_QUEUE_INCLUDED__

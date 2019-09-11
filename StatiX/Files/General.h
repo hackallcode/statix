@@ -1,8 +1,10 @@
-#ifndef __FILESYSTEM_GLOBAL_INCLUDED__
-#define __FILESYSTEM_GLOBAL_INCLUDED__
+#ifndef __FILES_GLOBAL_INCLUDED__
+#define __FILES_GLOBAL_INCLUDED__
 
 #include <utility>
-#include <functional>
+#include <memory>
+#include <vector>
+#include <string>
 
 namespace files 
 {
@@ -11,4 +13,4 @@ namespace files
 	using Callback = void(Socket, std::shared_ptr<std::vector<uint8_t>>);
 }
 
-#endif // !__FILESYSTEM_GLOBAL_INCLUDED__
+#endif // !__FILES_GLOBAL_INCLUDED__

@@ -1,44 +1,25 @@
-#ifndef __FILESYSTEM_POOL_INCLUDED__
-#define __FILESYSTEM_POOL_INCLUDED__
+#ifndef __FILES_POOL_INCLUDED__
+#define __FILES_POOL_INCLUDED__
 
-#include "../Common/Queue.h"
+#include "../Common/Pool.h"
 #include "General.h"
 #include "Cache.h"
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <atomic>
 
-namespace files 
+namespace files
 {
-	template<class C>
 	class Pool
+		: public statix::Pool<Task, Callback>
 	{
 	public:
-		using CallbackFunc = std::function<C>;
-
 		Pool(size_t threadNum, Cache const& cache, CallbackFunc callback);
-		~Pool();
-
-		void Push(Task const& task);
-		void Push(Task&& task);
-		void Stop();
-		void Join();
 
 	protected:
-		void Tick_(CallbackFunc callback);
+		virtual void Tick_(TaskElem task, CallbackFunc callback) override;
 
 	private:
-		std::atomic_bool stop_;
-		std::mutex m_;
-		std::condition_variable cv_;
+		Cache const& cache_;
 
-		Queue<Task> queue_;
-		Cache cache_;
-		std::vector<std::thread> threads_;
 	};
 }
 
-#include "Pool.inl"
-
-#endif // !__FILESYSTEM_POOL_INCLUDED__
+#endif // !__FILES_POOL_INCLUDED__

@@ -1,11 +1,11 @@
-#ifndef __FILESYSTEM_CACHE_INCLUDED__
-#define __FILESYSTEM_CACHE_INCLUDED__
+#ifndef __FILES_CACHE_INCLUDED__
+#define __FILES_CACHE_INCLUDED__
 
 #include <string>
 #include <unordered_map>
 #include <filesystem>
 
-namespace files 
+namespace files
 {
 	class Cache
 	{
@@ -29,4 +29,4 @@ namespace files
 	};
 }
 
-#endif // !__FILESYSTEM_CACHE_INCLUDED__
+#endif // !__FILES_CACHE_INCLUDED__

@@ -128,12 +128,14 @@
   <ItemGroup>
     <ClCompile Include="Files\Cache.cpp" />
     <ClCompile Include="Files\General.h" />
+    <ClCompile Include="Files\Pool.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Network\Receiver.cpp" />
     <ClCompile Include="Network\Transceiver.cpp" />
     <ClCompile Include="Network\Transmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Pool.h" />
     <ClInclude Include="Common\Queue.h" />
     <ClInclude Include="Files\Cache.h" />
     <ClInclude Include="Files\Pool.h" />
@@ -143,8 +145,8 @@
     <ClInclude Include="Network\Transmitter.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Common\Pool.inl" />
     <None Include="Common\Queue.inl" />
-    <None Include="Files\Pool.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
