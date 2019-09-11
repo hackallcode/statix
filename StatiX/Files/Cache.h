@@ -5,7 +5,8 @@
 #include <unordered_map>
 #include <filesystem>
 
-namespace files {
+namespace files 
+{
 	class Cache
 	{
 	public:

@@ -4,10 +4,11 @@
 #include <utility>
 #include <functional>
 
-namespace files {
+namespace files 
+{
 	using Socket = int;
 	using Task = std::pair<Socket, std::string>;
-	using Callback = std::function<void(Socket, std::shared_ptr<std::vector<uint8_t>>)>;
+	using Callback = void(Socket, std::shared_ptr<std::vector<uint8_t>>);
 }
 
 #endif // !__FILESYSTEM_GLOBAL_INCLUDED__

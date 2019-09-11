@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Files">
       <UniqueIdentifier>{3c326d70-6fb8-4847-bd81-7973e8b75af9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{5db4cfb0-9341-4d84-91c4-caad00627ad0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,12 +42,6 @@
     <ClCompile Include="Files\General.h">
       <Filter>Source Files\Files</Filter>
     </ClCompile>
-    <ClCompile Include="Files\Pool.cpp">
-      <Filter>Source Files\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Files\Queue.cpp">
-      <Filter>Source Files\Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\General.hpp">
@@ -62,11 +59,19 @@
     <ClInclude Include="Files\Cache.h">
       <Filter>Source Files\Files</Filter>
     </ClInclude>
+    <ClInclude Include="Common\Queue.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
     <ClInclude Include="Files\Pool.h">
       <Filter>Source Files\Files</Filter>
     </ClInclude>
-    <ClInclude Include="Files\Queue.h">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Common\Queue.inl">
+      <Filter>Source Files\Common</Filter>
+    </None>
+    <None Include="Files\Pool.inl">
       <Filter>Source Files\Files</Filter>
-    </ClInclude>
+    </None>
   </ItemGroup>
 </Project>

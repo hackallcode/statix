@@ -1,11 +1,12 @@
 #ifndef __FILES_QUEUE_INCLUDED__
 #define __FILES_QUEUE_INCLUDED__
 
-#include "General.h"
 #include <string>
 #include <unordered_map>
 
-namespace files {
+namespace files
+{
+	template<typename T>
 	class Queue
 	{
 	public:
@@ -13,24 +14,26 @@ namespace files {
 		~Queue();
 
 		bool IsEmpty();
-		void Push(Task const& value);
-		void Push(Task&& value);
-		Task Pop();
+		void Push(T const& value);
+		void Push(T&& value);
+		T Pop();
 	private:
 		class Item
 		{
 		public:
-			Task data;
+			T data;
 			Item* next;
 
 			Item();
-			Item(Task const& data);
-			Item(Task&& data);
+			Item(T const& data);
+			Item(T&& data);
 		};
 
 		Item* first_;
 		Item* last_;
 	};
 }
+
+#include "Queue.inl"
 
 #endif // !__FILES_QUEUE_INCLUDED__

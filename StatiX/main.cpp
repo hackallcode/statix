@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Files/Cache.h"
 #include "Files/Pool.h"
-#include "Queue.h"
 #include <mutex>
 
 std::mutex output_mutex;
@@ -14,7 +13,6 @@ void print(files::Socket sock, std::shared_ptr<std::vector<uint8_t>> data) {
 		return;
 	}
 	output_mutex.lock();
-	std::cout << sock << std::endl;
 	for (auto& ch : *data) {
 		std::cout << ch;
 	}
@@ -30,11 +28,10 @@ int main()
 		return 1;
 	}
 
-	files::Pool pool(cache, 20, print);
-	for (size_t i = 0; i < 100; ++i) {
+	files::Pool<files::Callback> pool(256, cache, print);
+	for (size_t i = 0; i < 3; ++i) {
 		pool.Push(files::Task(i, "html/main.html"));
 	}
-	pool.Run();
 	pool.Join();
-;	return 0;
+	return 0;
 }

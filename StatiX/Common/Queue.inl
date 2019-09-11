@@ -1,27 +1,30 @@
-#include "Queue.h"
-
-files::Queue::Item::Item()
+template<class T>
+files::Queue<T>::Item::Item()
 	: data()
 	, next(nullptr)
 {}
 
-files::Queue::Item::Item(Task const& _data)
+template<class T>
+files::Queue<T>::Item::Item(T const& _data)
 	: data(_data)
 	, next(nullptr)
 {}
 
-files::Queue::Item::Item(Task&& _data)
+template<class T>
+files::Queue<T>::Item::Item(T&& _data)
 	: data(_data)
 	, next(nullptr)
 {}
 
-files::Queue::Queue()
+template<class T>
+files::Queue<T>::Queue()
 	: first_(new Item())
 {
 	last_ = first_;
 }
 
-files::Queue::~Queue()
+template<class T>
+files::Queue<T>::~Queue()
 {
 	Item* curr = first_;
 	first_ = nullptr;
@@ -33,12 +36,14 @@ files::Queue::~Queue()
 	}
 }
 
-bool files::Queue::IsEmpty()
+template<class T>
+bool files::Queue<T>::IsEmpty()
 {
 	return first_ == last_;
 }
 
-void files::Queue::Push(Task const& value)
+template<class T>
+void files::Queue<T>::Push(T const& value)
 {
 	last_->data = value;
 	Item* item = new Item();
@@ -46,7 +51,8 @@ void files::Queue::Push(Task const& value)
 	last_ = item;
 }
 
-void files::Queue::Push(Task&& value)
+template<class T>
+void files::Queue<T>::Push(T&& value)
 {
 	last_->data = value;
 	Item* item = new Item();
@@ -54,7 +60,8 @@ void files::Queue::Push(Task&& value)
 	last_ = item;
 }
 
-files::Task files::Queue::Pop()
+template<class T>
+T files::Queue<T>::Pop()
 {
 	if (first_ == last_) {
 		return Task();

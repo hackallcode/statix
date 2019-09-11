@@ -1,30 +1,44 @@
 #ifndef __FILESYSTEM_POOL_INCLUDED__
 #define __FILESYSTEM_POOL_INCLUDED__
 
-#include "Queue.h"
+#include "../Common/Queue.h"
+#include "General.h"
 #include "Cache.h"
 #include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
 
-namespace files {
+namespace files 
+{
+	template<class C>
 	class Pool
 	{
 	public:
-		Pool(Cache const& cache, size_t threadNum);
+		using CallbackFunc = std::function<C>;
+
+		Pool(size_t threadNum, Cache const& cache, CallbackFunc callback);
+		~Pool();
+
 		void Push(Task const& task);
 		void Push(Task&& task);
-		void Run();
+		void Stop();
 		void Join();
+
+	protected:
+		void Tick_(CallbackFunc callback);
+
 	private:
-		bool hasRunned_;
-		Queue input_, output_;
-		std::thread thread_;
+		std::atomic_bool stop_;
+		std::mutex m_;
+		std::condition_variable cv_;
 
-		std::vector<Queue> queues_;
+		Queue<Task> queue_;
+		Cache cache_;
 		std::vector<std::thread> threads_;
-
-		void Run_();
-		static void Loop_(Queue& input, Queue& output, Cache const& cache);
 	};
 }
+
+#include "Pool.inl"
 
 #endif // !__FILESYSTEM_POOL_INCLUDED__
