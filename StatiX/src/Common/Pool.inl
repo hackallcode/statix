@@ -20,7 +20,7 @@ statix::Pool<T, C>::Pool(size_t threadNum, CallbackFunc callback)
 				}
 				Tick_(task, callback);
 			}
-		});
+			});
 	}
 }
 
@@ -42,7 +42,7 @@ void statix::Pool<T, C>::Push(TaskElem const& task)
 		return;
 	}
 	queue_.Push(task);
-	//cv_.notify_one();
+	cv_.notify_one();
 }
 
 template<class T, class C>
@@ -52,13 +52,7 @@ void statix::Pool<T, C>::Push(TaskElem&& task)
 		return;
 	}
 	queue_.Push(task);
-	//cv_.notify_one();
-}
-
-template<class T, class C>
-void statix::Pool<T, C>::Start()
-{
-	cv_.notify_all();
+	cv_.notify_one();
 }
 
 template<class T, class C>
@@ -70,7 +64,9 @@ void statix::Pool<T, C>::Stop()
 template<class T, class C>
 void statix::Pool<T, C>::Join()
 {
-	while (!queue_.IsEmpty()) {}
+	while (!queue_.IsEmpty()) {
+		std::this_thread::sleep_for(std::chrono::microseconds(1));
+	}
 }
 
 template<class T, class C>

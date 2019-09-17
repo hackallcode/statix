@@ -13,71 +13,83 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Network">
-      <UniqueIdentifier>{e45c65c9-9841-404e-9eb8-997807ca8432}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Files">
       <UniqueIdentifier>{3c326d70-6fb8-4847-bd81-7973e8b75af9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{5db4cfb0-9341-4d84-91c4-caad00627ad0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Server">
+      <UniqueIdentifier>{34d40640-7904-4274-af9e-050506c588de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{1ff8d6be-8d5b-44c0-a985-358859ea22a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClInclude Include="src\Common\Pool.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\Queue.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Files\Cache.h">
+      <Filter>Source Files\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Files\General.h">
+      <Filter>Source Files\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Server\Server.h">
+      <Filter>Source Files\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\General.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Files\FilesPool.h">
+      <Filter>Source Files\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\Session.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\Parser.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\NetPool.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\General.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Common\Pool.inl">
+      <Filter>Source Files\Common</Filter>
+    </None>
+    <None Include="src\Common\Queue.inl">
+      <Filter>Source Files\Common</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Files\Cache.cpp">
+      <Filter>Source Files\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Network\Receiver.cpp">
-      <Filter>Source Files\Network</Filter>
+    <ClCompile Include="src\Server\Server.cpp">
+      <Filter>Source Files\Server</Filter>
     </ClCompile>
-    <ClCompile Include="Network\Transceiver.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Network\Transmitter.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Files\Cache.cpp">
+    <ClCompile Include="src\Files\FilesPool.cpp">
       <Filter>Source Files\Files</Filter>
     </ClCompile>
-    <ClCompile Include="Files\General.h">
-      <Filter>Source Files\Files</Filter>
+    <ClCompile Include="src\Network\Session.cpp">
+      <Filter>Source Files\Network</Filter>
     </ClCompile>
-    <ClCompile Include="Files\Pool.cpp">
-      <Filter>Source Files\Files</Filter>
+    <ClCompile Include="src\Network\Parser.cpp">
+      <Filter>Source Files\Network</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Network\General.hpp">
+    <ClCompile Include="src\Network\NetPool.cpp">
       <Filter>Source Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\Receiver.hpp">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\Transceiver.hpp">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\Transmitter.hpp">
-      <Filter>Source Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Files\Cache.h">
-      <Filter>Source Files\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Queue.h">
-      <Filter>Source Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Pool.h">
-      <Filter>Source Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Files\Pool.h">
-      <Filter>Source Files\Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Common\Pool.inl">
-      <Filter>Source Files\Common</Filter>
-    </None>
-    <None Include="Common\Queue.inl">
-      <Filter>Source Files\Common</Filter>
-    </None>
+    </ClCompile>
   </ItemGroup>
 </Project>

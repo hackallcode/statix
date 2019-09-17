@@ -18,6 +18,32 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Common\General.h" />
+    <ClInclude Include="src\Common\Pool.h" />
+    <ClInclude Include="src\Common\Queue.h" />
+    <ClInclude Include="src\Files\Cache.h" />
+    <ClInclude Include="src\Files\General.h" />
+    <ClInclude Include="src\Files\FilesPool.h" />
+    <ClInclude Include="src\Network\General.h" />
+    <ClInclude Include="src\Network\Parser.h" />
+    <ClInclude Include="src\Network\NetPool.h" />
+    <ClInclude Include="src\Network\Session.h" />
+    <ClInclude Include="src\Server\Server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Common\Pool.inl" />
+    <None Include="src\Common\Queue.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Files\Cache.cpp" />
+    <ClCompile Include="src\Files\FilesPool.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Network\Parser.cpp" />
+    <ClCompile Include="src\Network\NetPool.cpp" />
+    <ClCompile Include="src\Network\Session.cpp" />
+    <ClCompile Include="src\Server\Server.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6566D1F9-7A18-4777-9825-934B449D7FFC}</ProjectGuid>
     <RootNamespace>Statix</RootNamespace>
@@ -77,6 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%BOOST_ROOT%;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%BOOST_ROOT%\stage\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -125,29 +152,6 @@
       <AdditionalLibraryDirectories>%BOOST_ROOT%\stage\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Files\Cache.cpp" />
-    <ClCompile Include="Files\General.h" />
-    <ClCompile Include="Files\Pool.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Network\Receiver.cpp" />
-    <ClCompile Include="Network\Transceiver.cpp" />
-    <ClCompile Include="Network\Transmitter.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Common\Pool.h" />
-    <ClInclude Include="Common\Queue.h" />
-    <ClInclude Include="Files\Cache.h" />
-    <ClInclude Include="Files\Pool.h" />
-    <ClInclude Include="Network\General.hpp" />
-    <ClInclude Include="Network\Receiver.hpp" />
-    <ClInclude Include="Network\Transceiver.hpp" />
-    <ClInclude Include="Network\Transmitter.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Common\Pool.inl" />
-    <None Include="Common\Queue.inl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

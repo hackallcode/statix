@@ -7,11 +7,11 @@
 
 namespace files
 {
-	class Pool
+	class FilesPool
 		: public statix::Pool<Task, Callback>
 	{
 	public:
-		Pool(size_t threadNum, Cache const& cache, CallbackFunc callback);
+		FilesPool(size_t threadNum, Cache const& cache, CallbackFunc callback);
 
 	protected:
 		virtual void Tick_(TaskElem task, CallbackFunc callback) override;

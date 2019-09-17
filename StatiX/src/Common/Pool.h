@@ -18,13 +18,18 @@ namespace statix
 		using CallbackFunc = std::function<C>;
 
 		Pool(size_t threadNum, CallbackFunc callback);
+		Pool(Pool const&) = delete;
+		Pool(Pool&&) = delete;
+
 		virtual ~Pool();
 
 		void Push(TaskElem const& task);
 		void Push(TaskElem&& task);
-		void Start();
 		void Stop();
 		void Join();
+
+		Pool& operator=(Pool const&) = delete;
+		Pool& operator=(Pool&&) = delete;
 
 	protected:
 		virtual void Tick_(TaskElem task, CallbackFunc callback);

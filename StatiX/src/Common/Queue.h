@@ -8,12 +8,19 @@ namespace statix
 	{
 	public:
 		Queue();
+		Queue(Queue const&) = delete;
+		Queue(Queue&&) = delete;
+
 		~Queue();
 
 		bool IsEmpty();
 		void Push(T const& value);
 		void Push(T&& value);
 		T Pop();
+
+		Queue& operator=(Queue const&) = delete;
+		Queue& operator=(Queue&&) = delete;
+
 	private:
 		class Item
 		{
