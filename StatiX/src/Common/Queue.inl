@@ -45,31 +45,38 @@ bool statix::Queue<T>::IsEmpty()
 template<class T>
 void statix::Queue<T>::Push(T const& value)
 {
+	m_.lock();
 	last_->data = value;
 	Item* item = new Item();
 	last_->next = item;
 	last_ = item;
+	m_.unlock();
 }
 
 template<class T>
 void statix::Queue<T>::Push(T&& value)
 {
+	m_.lock();
 	last_->data = value;
 	Item* item = new Item();
 	last_->next = item;
 	last_ = item;
+	m_.unlock();
 }
 
 template<class T>
 T statix::Queue<T>::Pop()
 {
+	m_.lock();
 	if (first_ == last_) {
 		return T();
 	}
 
-	T data = std::move(first_->data);
 	Item* tmp = first_;
 	first_ = first_->next;
+	m_.unlock();
+	
+	T data = std::move(tmp->data);
 	delete tmp;
 	return data;
 }

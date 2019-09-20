@@ -6,6 +6,7 @@
 #include "../Network/NetPool.h"
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 
@@ -18,17 +19,16 @@ namespace serv
 	public:
 		Server(short port, size_t threadsCount, std::filesystem::path const& folder);
 		void Run();
+		void Stop();
 
 	private:
+		bool started_;
 		boost::asio::io_service io_service_;
 		tcp::acceptor acceptor_;
 		net::Parser parser_;
 		net::NetPool netPool_;
 		files::Cache cache_;
 		files::FilesPool filesPool_;
-
-		void StartAccept_();
-		void HandleAccept_(net::Client client, const boost::system::error_code& error);
 	};
 
 	void GetFile(files::FilesPool& filesPool, net::Client client, net::Header header);

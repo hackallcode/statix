@@ -1,6 +1,8 @@
 #ifndef __COMMON_QUEUE_INCLUDED__
 #define __COMMON_QUEUE_INCLUDED__
 
+#include <mutex>
+
 namespace statix
 {
 	template<typename T>
@@ -32,7 +34,8 @@ namespace statix
 			Item(T const& data);
 			Item(T&& data);
 		};
-
+		
+		std::mutex m_;
 		Item* first_;
 		Item* last_;
 	};

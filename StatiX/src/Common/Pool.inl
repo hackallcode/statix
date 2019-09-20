@@ -8,15 +8,15 @@ statix::Pool<T, C>::Pool(size_t threadsCount, CallbackFunc callback)
 				TaskElem task;
 				{
 					std::unique_lock<std::mutex> lock(m_);
-					cv_.wait(lock, [this]() -> bool {
-						return !queue_.IsEmpty() || stop_;
-						});
+					cv_.wait(lock, [this]() -> bool { return !queue_.IsEmpty() || stop_; });
 
 					if (stop_ && queue_.IsEmpty()) {
 						return;
 					}
 
-					task = std::move(queue_.Pop());
+					if (!queue_.IsEmpty()) {
+						task = queue_.Pop();
+					}
 				}
 				Tick_(task, callback);
 			}

@@ -49,7 +49,14 @@ namespace files
 		}
 	};
 
-	using Task = std::pair<net::Client, std::string>;
+	struct Task {
+		net::Client client;
+		std::string path;
+
+		operator bool() const {
+			return client.operator bool();
+		}
+	};
 	using Callback = void(net::Client, std::shared_ptr<CacheFile>);
 }
 

@@ -25,7 +25,7 @@ namespace net
 		void Send405();
 		void SendFile(std::shared_ptr<files::CacheFile> file);
 		void SetIdDir(bool isDir);
-		void SetMethod(std::string method);
+		void SetMethod(std::string const& method);
 
 	private:
 		tcp::socket socket_;

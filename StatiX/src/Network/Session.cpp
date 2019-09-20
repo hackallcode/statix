@@ -50,7 +50,7 @@ void net::Session::SetIdDir(bool isDir)
 	isDir_ = isDir;
 }
 
-void net::Session::SetMethod(std::string method)
+void net::Session::SetMethod(std::string const& method)
 {
 	method_ = method;
 }
