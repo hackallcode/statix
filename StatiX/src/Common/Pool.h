@@ -17,7 +17,7 @@ namespace statix
 		using TaskElem = T;
 		using CallbackFunc = std::function<C>;
 
-		Pool(size_t threadNum, CallbackFunc callback);
+		Pool(size_t threadsCount, CallbackFunc callback);
 		Pool(Pool const&) = delete;
 		Pool(Pool&&) = delete;
 

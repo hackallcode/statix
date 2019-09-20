@@ -1,8 +1,8 @@
 template<class T, class C>
-statix::Pool<T, C>::Pool(size_t threadNum, CallbackFunc callback)
+statix::Pool<T, C>::Pool(size_t threadsCount, CallbackFunc callback)
 {
-	threads_.reserve(threadNum);
-	for (size_t i = 0; i < threadNum; ++i) {
+	threads_.reserve(threadsCount);
+	for (size_t i = 0; i < threadsCount; ++i) {
 		threads_.emplace_back([this, callback]() -> void {
 			while (true) {
 				TaskElem task;

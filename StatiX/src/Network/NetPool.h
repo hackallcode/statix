@@ -11,14 +11,13 @@ namespace net
 		: public statix::Pool<Task, Callback>
 	{
 	public:
-		NetPool(size_t threadNum, Session const& session, CallbackFunc callback);
+		NetPool(Parser const& parser, size_t threadNum, CallbackFunc callback);
 
 	protected:
 		virtual void Tick_(TaskElem task, CallbackFunc callback) override;
 
 	private:
-		Session const& session_;
-
+		Parser const& parser_;
 	};
 }
 

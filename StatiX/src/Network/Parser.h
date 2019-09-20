@@ -10,9 +10,8 @@ namespace net
 	public:
 		Parser();
 
-		Header Parse(std::string header) const;
+		Header Parse(std::string const& header) const;
 	private:
-
 	};
 }
 

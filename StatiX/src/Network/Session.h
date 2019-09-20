@@ -3,10 +3,12 @@
 
 #include "General.h"
 #include "Parser.h"
+#include "../Files/FilesPool.h"
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
+#include <chrono>
 
 using boost::asio::ip::tcp;
 
@@ -15,22 +17,28 @@ namespace net
 	class Session
 	{
 	public:
-		Session(boost::asio::io_service& io_service, net::Parser const& parser);
+		Session(boost::asio::io_service& io_service);
 
 		tcp::socket& Socket();
 
-		void Start();
-		void Write(std::shared_ptr<std::vector<uint8_t>> data);
+		std::string Read();
+		void Send405();
+		void SendFile(std::shared_ptr<files::CacheFile> file);
+		void SetIdDir(bool isDir);
+		void SetMethod(std::string method);
 
 	private:
 		tcp::socket socket_;
-		std::string input_;
-		net::Parser parser_;
-		char data_[RECEIVER_BUFFER_LENGTH];
-
-		void OnRead_(const boost::system::error_code& error, size_t bytes_transferred);
-		void OnWrite_(const boost::system::error_code& error);
+		std::string method_;
+		std::string date_;
+		bool isDir_;
 	};
+
+	std::string GetHeader403_(std::string const& date);
+	std::string GetHeader404_(std::string const& date);
+	std::string GetHeader405_(std::string const& date);
+
+	std::string GetHeader200_(std::string const& date, std::string const& type, std::string const& length);
 }
 
 #endif // !__NET_SESSION_INCLUDED__

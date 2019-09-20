@@ -11,12 +11,16 @@
 namespace net
 {
 	struct Header {
-
+		std::string Method;
+		std::string Path;
 	};
-	
-	static size_t const RECEIVER_BUFFER_LENGTH = 256U;
 
-	using Task = std::pair<Client, std::string>;
+	std::string const HeaderEnd = "\r\n";
+	std::string const StaticResponceHeader = "Server: StatiX\r\nConnection: Closed\r\n";
+
+	static size_t const RECEIVER_BUFFER_LENGTH = 16U;
+
+	using Task = Client;
 	using Callback = void(Client, Header);
 }
 

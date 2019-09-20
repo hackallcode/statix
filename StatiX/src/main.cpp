@@ -1,32 +1,45 @@
 #include <iostream>
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <signal.h>
+#include <clocale>
+#include "Server/Server.h"
 
-int main()
+struct Params{
+	short Port;
+	size_t ThreadsLimit;
+	std::string Root;
+};
+
+Params ParseParams(char* argv[], int argc)
 {
-	//try	{
-	//	boost::asio::io_service io_service;
+	Params res{
+		8000,
+		256,
+		"."
+	};
+	if (argc > 1) {
+		res.Port = std::stoi(argv[1]);
+	}
+	if (argc > 2) {
+		res.ThreadsLimit = std::stoi(argv[2]);
+	}
+	if (argc > 3) {
+		res.Root = argv[3];
+	}
+	return res;
+}
 
-	//	
-
-	//	// Wait for signals indicating time to shut down.
-	//	boost::asio::signal_set signals(io_service);
-	//	signals.add(SIGINT);
-	//	signals.add(SIGTERM);
-	//	#if defined(SIGQUIT)
-	//		signals.add(SIGQUIT);
-	//	#endif // defined(SIGQUIT)
-	//	signals.async_wait(boost::bind(&boost::asio::io_service::stop, &io_service));
-
-	//	// Run the server.
-	//	io_service.run();
-	//}
-	//catch (std::exception& e) {
-	//	std::cerr << "Unknown exception: " << e.what() << "\n";
-	//}
-
-
-
+int main(int argc, char* argv[])
+{
+	Params params = ParseParams(argv, argc);
+	std::setlocale(LC_ALL, "ru_RU.UTF-8");
+	try	{
+		std::cout << "Server started at " << params.Port << std::endl;
+		std::cout << "Threads limit is " << params.ThreadsLimit << std::endl;
+		std::cout << "Root folder is " << std::filesystem::absolute(params.Root) << std::endl;
+		serv::Server server(params.Port, params.ThreadsLimit, params.Root);
+		server.Run();
+	}
+	catch (std::exception& e) {
+		std::cerr << "Unknown exception: " << e.what() << "\n";
+	}
 	return 0;
 }

@@ -1,12 +1,23 @@
 #include "NetPool.h"
 
-net::NetPool::NetPool(size_t threadNum, Session const& session, CallbackFunc callback)
-	: session_{ session }
+net::NetPool::NetPool(Parser const& parser, size_t threadNum, CallbackFunc callback)
+	: parser_{ parser }
 	, statix::Pool<Task, Callback>(threadNum, callback)
 {}
 
-void net::NetPool::Tick_(TaskElem task, CallbackFunc callback)
+void net::NetPool::Tick_(TaskElem client, CallbackFunc callback)
 {
-	//auto header = session_.Parse(task.second);
-	//callback(task.first, header);
+	try {
+		auto header{ parser_.Parse(client->Read()) };
+		if (header.Method != "GET" && header.Method != "HEAD") {
+			client->Send405();
+			return;
+		}
+		if (header.Path.back() == '/') {
+			client->SetIdDir(true);
+		}
+		client->SetMethod(header.Method);
+		callback(client, header);
+	}
+	catch (std::exception&) {}
 }

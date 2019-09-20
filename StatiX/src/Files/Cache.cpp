@@ -5,9 +5,13 @@
 
 namespace fs = std::filesystem;
 
-files::Cache::Cache()
+files::Cache::Cache(std::filesystem::path const& folder, std::vector<std::string> const& indexes)
 	: files_()
-{}
+{
+	if (!CacheFolder(folder, indexes)) {
+		std::cerr << "Impossible to found folder" << std::endl;
+	}
+}
 
 bool files::Cache::CacheFolder(fs::path const& root, std::vector<std::string> const& indexes)
 {
@@ -27,7 +31,7 @@ files::Cache::ConstPtr files::Cache::GetFile(std::string path) const
 
 	auto const& res = files_.find(key);
 	if (res == files_.end()) {
-		return nullptr;
+		return ConstPtr();
 	}
 	return res->second;
 }
@@ -35,8 +39,8 @@ files::Cache::ConstPtr files::Cache::GetFile(std::string path) const
 bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std::vector<std::string> const& indexes)
 {	
 	// Key for map
-	std::string key = GetKey_(file.lexically_relative(root));
-	
+	std::string key = '/' + GetKey_(file.lexically_relative(root));
+
 	// Already in map
 	if (files_.find(key) != files_.end()) {
 		return true;
@@ -52,7 +56,7 @@ bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std
 	if (!fin.is_open()) {
 		return false;
 	}
-	Ptr data(new std::vector<uint8_t>(std::istreambuf_iterator<char>(fin), {}));
+	Ptr ptr(new CacheFile(std::vector<uint8_t>(std::istreambuf_iterator<char>(fin), {}), file.extension().string()));
 	fin.close();
 	
 	// Add file as folder if index of folder
@@ -60,13 +64,13 @@ bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std
 	for (auto& index : indexes) {
 		if (index == filename) {
 			std::string folderKey = GetKey_(fs::path(key).remove_filename());
-			files_.emplace(folderKey, data);
+			files_.emplace(folderKey, ptr);
 			break;
 		}
 	}
 
 	// Add file in map
-	files_.emplace(key, data);
+	files_.emplace(key, ptr);
 	return true;
 }
 

@@ -1,6 +1,6 @@
 #include "FilesPool.h"
 
-files::FilesPool::FilesPool(size_t threadNum, Cache const& cache, CallbackFunc callback)
+files::FilesPool::FilesPool(Cache const& cache, size_t threadNum, CallbackFunc callback)
 	: cache_{ cache }
 	, statix::Pool<Task, Callback>(threadNum, callback)
 {}
@@ -8,5 +8,5 @@ files::FilesPool::FilesPool(size_t threadNum, Cache const& cache, CallbackFunc c
 void files::FilesPool::Tick_(TaskElem task, CallbackFunc callback)
 {
 	auto file = cache_.GetFile(task.second);
-	//callback(task.first, file);
+	callback(task.first, file);
 }

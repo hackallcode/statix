@@ -1,9 +1,9 @@
 #include "Session.h"
 
-net::Session::Session(boost::asio::io_service& io_service, net::Parser const& parser)
+net::Session::Session(boost::asio::io_service& io_service)
 	: socket_(io_service)
-	, data_()
-	, parser_(parser)
+	, date_("Wed, 21 Oct 2015 07:28:00 GMT")
+	, isDir_(false)
 {}
 
 tcp::socket& net::Session::Socket()
@@ -11,56 +11,80 @@ tcp::socket& net::Session::Socket()
 	return socket_;
 }
 
-void net::Session::Start()
+std::string net::Session::Read()
 {
-	socket_.async_read_some(
-		boost::asio::buffer(data_, RECEIVER_BUFFER_LENGTH),
-		boost::bind(
-			&Session::OnRead_, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred
-		)
-	);
-}
-
-void net::Session::Write(std::shared_ptr<std::vector<uint8_t>> data)
-{
-	boost::asio::async_write(
-		socket_,
-		boost::asio::buffer(*data),
-		boost::bind(
-			&Session::OnWrite_, this, 
-			boost::asio::placeholders::error
-		)
-	);
-}
-
-void net::Session::OnRead_(const boost::system::error_code& error, size_t bytesTransferred)
-{
-	if (!error || error == boost::asio::error::eof) {
-		if (bytesTransferred != 0) {
-			input_ += std::string(data_, bytesTransferred);
-		}
-		if (bytesTransferred == 0 || error == boost::asio::error::eof) {
-			parser_.Parse(input_);
-			return;
-		}
-		socket_.async_read_some(
-			boost::asio::buffer(data_, RECEIVER_BUFFER_LENGTH),
-			boost::bind(
-				&Session::OnRead_, this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred
-			)
-		);
+	boost::asio::streambuf buffer;
+	boost::system::error_code error;
+	size_t length = boost::asio::read_until(socket_, buffer, HeaderEnd, error);
+	if (error) {
+		throw boost::system::system_error(error); // Some other error.
 	}
-	else {
-		delete this;
+	auto data = buffer.data();
+	return std::string(boost::asio::buffers_begin(data), boost::asio::buffers_begin(data) + length);
+}
+
+void net::Session::Send405()
+{
+	socket_.write_some(boost::asio::buffer(GetHeader405_(date_)));
+}
+
+void net::Session::SendFile(std::shared_ptr<files::CacheFile> file)
+{
+	if (!file) {
+		if (isDir_) {
+			socket_.write_some(boost::asio::buffer(GetHeader403_(date_)));
+		}
+		else {
+			socket_.write_some(boost::asio::buffer(GetHeader404_(date_)));
+		}
+		return;
+	}
+	socket_.write_some(boost::asio::buffer(GetHeader200_(date_, file->type, file->length)));
+	if (method_ == "GET") {
+		socket_.write_some(boost::asio::buffer(file->data));
 	}
 }
 
-void net::Session::OnWrite_(const boost::system::error_code& error)
+void net::Session::SetIdDir(bool isDir)
 {
-	delete this;
+	isDir_ = isDir;
 }
 
+void net::Session::SetMethod(std::string method)
+{
+	method_ = method;
+}
+
+std::string net::GetHeader403_(std::string const& date)
+{
+	return "HTTP/1.0 403 Forbidden\r\n"
+		+ StaticResponceHeader
+		+ "Date: " + date
+		+ "\r\n\r\n";
+}
+
+std::string net::GetHeader404_(std::string const& date)
+{
+	return "HTTP/1.0 404 Not Found\r\n"
+		+ StaticResponceHeader
+		+ "Date: " + date
+		+ "\r\n\r\n";
+}
+
+std::string net::GetHeader405_(std::string const& date)
+{
+	return "HTTP/1.0 405 Method Not Allowed\r\n"
+		+ StaticResponceHeader
+		+ "Date: " + date
+		+ "\r\n\r\n";
+}
+
+std::string net::GetHeader200_(std::string const& date, std::string const& type, std::string const& length)
+{
+	return "HTTP/1.0 200 OK\r\n"
+		+ StaticResponceHeader
+		+ "Date: " + date
+		+ "\r\nContent-Length: " + length 
+		+ "\r\nContent-Type: " + type
+		+ "\r\n\r\n";
+}
