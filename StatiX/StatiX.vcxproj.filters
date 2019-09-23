@@ -60,6 +60,9 @@
     <ClInclude Include="src\Network\General.h">
       <Filter>Source Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="src\Common\Config.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\Pool.inl">
@@ -90,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="src\Network\NetPool.cpp">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\Config.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

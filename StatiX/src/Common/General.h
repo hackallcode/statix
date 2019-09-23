@@ -10,8 +10,4 @@ namespace net
 	using Client = std::shared_ptr<Session>;
 }
 
-namespace statix
-{
-}
-
 #endif // !__COMMON_GENERAL_INCLUDED__

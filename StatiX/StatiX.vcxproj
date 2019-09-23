@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Common\Config.h" />
     <ClInclude Include="src\Common\General.h" />
     <ClInclude Include="src\Common\Pool.h" />
     <ClInclude Include="src\Common\Queue.h" />
@@ -36,6 +37,7 @@
     <None Include="src\Common\Queue.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Common\Config.cpp" />
     <ClCompile Include="src\Files\Cache.cpp" />
     <ClCompile Include="src\Files\FilesPool.cpp" />
     <ClCompile Include="src\main.cpp" />

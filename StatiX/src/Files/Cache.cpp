@@ -8,8 +8,14 @@ namespace fs = std::filesystem;
 files::Cache::Cache(std::filesystem::path const& folder, std::vector<std::string> const& indexes)
 	: files_()
 {
+	if (!fs::exists(folder)) {
+		std::cerr << "Folder not found: " << folder << std::endl;
+		return;
+	}
+
 	if (!CacheFolder(folder, indexes)) {
-		std::cerr << "Impossible to found folder " << folder << std::endl;
+		std::cerr << "Impossible to cache folder: " << folder << std::endl;
+		return;
 	}
 }
 
@@ -59,18 +65,18 @@ bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std
 	 	return false;
 	 }
 
-	 // Read file in array
-	 fin.seekg(0, std::ios::end);
-	 size_t fileSize = fin.tellg();
+	 size_t fileSize = fs::file_size(file);
 	 std::vector<char> data;
 	 data.resize(fileSize);
+
+	 // Read file in array
 	 fin.seekg(0, std::ios::beg);
 	 fin.read(&data[0], fileSize);
-	
+	 fin.close();
+
 	 // Save & Close
 	 Ptr ptr(new CacheFile(std::move(data), file.extension().string()));
-	 fin.close();
-	
+	 
 	 // Add file as folder if index of folder
 	 std::string filename = file.filename().string();
 	 for (auto& index : indexes) {

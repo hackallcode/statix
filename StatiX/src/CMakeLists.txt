@@ -6,6 +6,8 @@ add_executable(StatiX
     main.cpp
 
     Common/General.h
+    Common/Config.h
+    Common/Config.cpp
     Common/Pool.h
     Common/Pool.inl
     Common/Queue.h
