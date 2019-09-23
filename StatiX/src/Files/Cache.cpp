@@ -9,7 +9,7 @@ files::Cache::Cache(std::filesystem::path const& folder, std::vector<std::string
 	: files_()
 {
 	if (!CacheFolder(folder, indexes)) {
-		std::cerr << "Impossible to found folder" << std::endl;
+		std::cerr << "Impossible to found folder " << folder << std::endl;
 	}
 }
 
@@ -20,7 +20,9 @@ bool files::Cache::CacheFolder(fs::path const& root, std::vector<std::string> co
 	}
 
 	for (auto& p : fs::recursive_directory_iterator(root)) {
-		RememberFile_(root, p, indexes);
+		if (!fs::is_directory(p)) {
+			RememberFile_(root, p, indexes);
+		}
 	}
 	return true;
 }
@@ -56,8 +58,17 @@ bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std
 	 if (!fin.is_open()) {
 	 	return false;
 	 }
-	 std::istream_iterator<uint8_t> fbegin(fin), fend;
-	 Ptr ptr(new CacheFile(std::vector<uint8_t>(fbegin, fend), file.extension().string()));
+
+	 // Read file in array
+	 fin.seekg(0, std::ios::end);
+	 size_t fileSize = fin.tellg();
+	 std::vector<char> data;
+	 data.resize(fileSize);
+	 fin.seekg(0, std::ios::beg);
+	 fin.read(&data[0], fileSize);
+	
+	 // Save & Close
+	 Ptr ptr(new CacheFile(std::move(data), file.extension().string()));
 	 fin.close();
 	
 	 // Add file as folder if index of folder

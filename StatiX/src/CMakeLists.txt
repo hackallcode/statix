@@ -1,4 +1,3 @@
-set(BOOST_ROOT C:/Program Files/Boost/boost_1_67_0)
 find_package(Boost 1.67.0 REQUIRED COMPONENTS system)
 
 include_directories(${Boost_INCLUDE_DIRS})

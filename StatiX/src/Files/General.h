@@ -11,13 +11,13 @@ namespace files
 {
 	class CacheFile {
 	public:
-		CacheFile(std::vector<uint8_t>&& _data, std::string const& ext)
+		CacheFile(std::vector<char>&& _data, std::string const& ext)
 			: data(_data)
 			, type(GetType(ext))
 			, length(std::to_string(data.size()))
 		{}
 
-		std::vector<uint8_t> data;
+		std::vector<char> data;
 		std::string type;
 		std::string length;
 	private:
