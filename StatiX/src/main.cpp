@@ -55,7 +55,7 @@ void ParseConfig(Params& params, fs::path const& filename)
 
 void ParseParams(Params& params, char* argv[], int argc)
 {
-	std::string filename = "statix.conf";
+	std::string filename = "/etc/httpd.conf";
 	if (argc > 1) {
 		filename = argv[1];
 	}
@@ -74,7 +74,7 @@ void HandleSignals()
 	signal(SIGINT, SignalHandler);
 	signal(SIGTERM, SignalHandler);
 #if defined(SIGQUIT)
-	signal(SIGQUIT, signalHandler);
+	signal(SIGQUIT, SignalHandler);
 #endif
 }
 
@@ -85,16 +85,16 @@ int main(int argc, char* argv[])
 	Params params{
 		80,
 		256,
-		"src"
+		"static"
 	};
 	ParseParams(params, argv, argc);
 	HandleSignals();
 
 	try {
-		GlobalServer.reset(new serv::Server(params.Port, params.ThreadsLimit, params.Root));
-		std::cout << "Server started at " << params.Port << std::endl;
 		std::cout << "Threads limit is " << params.ThreadsLimit << std::endl;
 		std::cout << "Root folder is " << fs::absolute(params.Root) << std::endl;
+		GlobalServer.reset(new serv::Server(params.Port, params.ThreadsLimit, params.Root));
+		std::cout << "Server started at " << params.Port << std::endl;
 		GlobalServer->Run();
 		std::cout << "Server stopped" << std::endl;
 	}
