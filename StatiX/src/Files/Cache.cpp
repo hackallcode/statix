@@ -9,7 +9,7 @@ files::Cache::Cache(std::filesystem::path const& folder, std::vector<std::string
 	: files_()
 {
 	if (!CacheFolder(folder, indexes)) {
-		std::cerr << "Impossible to found folder" << std::endl;
+		std::cerr << "Impossible to found folder " << folder << std::endl;
 	}
 }
 
@@ -20,7 +20,9 @@ bool files::Cache::CacheFolder(fs::path const& root, std::vector<std::string> co
 	}
 
 	for (auto& p : fs::recursive_directory_iterator(root)) {
-		RememberFile_(root, p, indexes);
+		if (!fs::is_directory(p)) {
+			RememberFile_(root, p, indexes);
+		}
 	}
 	return true;
 }
@@ -38,39 +40,49 @@ files::Cache::ConstPtr files::Cache::GetFile(std::string path) const
 
 bool files::Cache::RememberFile_(fs::path const& root, fs::path const& file, std::vector<std::string> const& indexes)
 {	
-	// Key for map
-	std::string key = '/' + GetKey_(file.lexically_relative(root));
+	 // Key for map
+	 std::string key = '/' + GetKey_(file.lexically_relative(root));
 
-	// Already in map
-	if (files_.find(key) != files_.end()) {
-		return true;
-	}
+	 // Already in map
+	 if (files_.find(key) != files_.end()) {
+	 	return true;
+	 }
 
-	// File not found
-	if (!fs::exists(file)) {
-		return false;
-	}
+	 // File not found
+	 if (!fs::exists(file)) {
+	 	return false;
+	 }
 
-	// Read data of file
-	std::ifstream fin(file, std::ios::binary);
-	if (!fin.is_open()) {
-		return false;
-	}
-	Ptr ptr(new CacheFile(std::vector<uint8_t>(std::istreambuf_iterator<char>(fin), {}), file.extension().string()));
-	fin.close();
+	 // Read data of file
+	 std::ifstream fin(file, std::ios::binary);
+	 if (!fin.is_open()) {
+	 	return false;
+	 }
+
+	 // Read file in array
+	 fin.seekg(0, std::ios::end);
+	 size_t fileSize = fin.tellg();
+	 std::vector<char> data;
+	 data.resize(fileSize);
+	 fin.seekg(0, std::ios::beg);
+	 fin.read(&data[0], fileSize);
 	
-	// Add file as folder if index of folder
-	std::string filename = file.filename().string();
-	for (auto& index : indexes) {
-		if (index == filename) {
-			std::string folderKey = GetKey_(fs::path(key).remove_filename());
-			files_.emplace(folderKey, ptr);
-			break;
-		}
-	}
+	 // Save & Close
+	 Ptr ptr(new CacheFile(std::move(data), file.extension().string()));
+	 fin.close();
+	
+	 // Add file as folder if index of folder
+	 std::string filename = file.filename().string();
+	 for (auto& index : indexes) {
+	 	if (index == filename) {
+	 		std::string folderKey = GetKey_(fs::path(key).remove_filename());
+	 		files_.emplace(folderKey, ptr);
+	 		break;
+	 	}
+	 }
 
-	// Add file in map
-	files_.emplace(key, ptr);
+	 // Add file in map
+	 files_.emplace(key, ptr);
 	return true;
 }
 
