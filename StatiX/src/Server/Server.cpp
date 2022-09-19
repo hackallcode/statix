@@ -43,4 +43,5 @@ void serv::GetFile(files::FilesPool& filesPool, net::Client client, net::Header 
 void serv::Answer(net::Client client, std::shared_ptr<files::CacheFile> file)
 {
 	client->SendFile(file);
+	client->Socket().close();
 }

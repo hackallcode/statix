@@ -16,7 +16,7 @@ namespace net
 	};
 
 	std::string const HeaderEnd = "\r\n";
-	std::string const StaticResponceHeader = "Server: StatiX\r\nConnection: Closed\r\n";
+	std::string const StaticResponceHeader = "Server: StatiX\r\nConnection: Close\r\n";
 
 	static size_t const RECEIVER_BUFFER_LENGTH = 16U;
 
